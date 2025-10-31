@@ -1,0 +1,44 @@
+# Iteration : 순회
+
+from typing import Sequence
+
+class Bar:
+    def __init__(self, data:Sequence[int]) -> None:
+        self.data:Sequence = data
+
+    def __iter__(self): # 이게 구현되어 있어야 순회가 가능함.
+        return BarIterator(self.data)
+
+    
+class BarIterator:
+    def __init__(self, data:Sequence) -> None:
+        self.data:Sequence = data
+        self.index:int = 0
+
+    def __next__(self)->int:
+        # self.data 리스트의 0번쨰 요소에서 마지막 요소까지 순회
+        if self.index < len(self.data):
+            value = self.data[self.index]
+            self.index += 1
+            return value
+        
+        raise StopIteration
+    
+obj = Bar([1, 2, 3, 4])
+
+for v in obj: # -> instance of Bar
+    print(v) # 1, 2, 3, 4
+
+
+# 이거는 인덱스가 초기화가 안돼서 다 돌았다고 판단해 출력물이 없다.
+for v in obj: # -> instance of Bar
+    print(v) # 1, 2, 3, 4
+
+# x = [10, 20, 30]
+
+# foo = iter(x)
+# while True:
+#     try:
+#         print(next(foo)) # 현재값을 출력하고 다음 값으로 shift 하는 역할
+#     except StopIteration: # 내부의 값들을 전부 다 돌았다면 StopIteration이라는 예외를 발생하고 정지
+#         break
